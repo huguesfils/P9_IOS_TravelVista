@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import SwiftUI
 
 class DetailViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var countryNameLabel: UILabel!
@@ -28,6 +29,7 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
 
         if let country = self.country {
             self.setUpData(country: country)
+            self.updateTitleView()
         }
     }
     
@@ -83,5 +85,20 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
         let nextViewController: MapViewController = storyBoard.instantiateViewController(withIdentifier: "MapViewController") as! MapViewController
         nextViewController.setUpData(capitalName: self.country?.capital, lat: self.country?.coordinates.latitude ?? 28.394857, long: self.country?.coordinates.longitude ?? 84.124008)
         self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    func updateTitleView() {
+        guard let country = self.country else { return }
+        let swiftUIView = UIHostingController(rootView: TitleView(countryName: country.name, capitalName: country.capital))
+        addChild(swiftUIView)
+        swiftUIView.view.translatesAutoresizingMaskIntoConstraints = false
+        titleView.addSubview(swiftUIView.view)
+        swiftUIView.didMove(toParent: self)
+        NSLayoutConstraint.activate([
+            swiftUIView.view.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
+            swiftUIView.view.trailingAnchor.constraint(equalTo: titleView.trailingAnchor),
+            swiftUIView.view.topAnchor.constraint(equalTo: titleView.topAnchor),
+            swiftUIView.view.bottomAnchor.constraint(equalTo: titleView.bottomAnchor)
+        ])
     }
 }
