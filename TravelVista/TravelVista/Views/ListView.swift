@@ -2,8 +2,6 @@ import SwiftUI
 
 struct ListView: View {
     let regions: [Region] = Service().load("Source.json")
-    @State private var selectedCountry: Country? = nil
-    @State private var showDetail = false
     
     var body: some View {
         NavigationStack {
@@ -11,10 +9,9 @@ struct ListView: View {
                 ForEach(regions, id: \ .name) { region in
                     Section(header: Text(region.name)) {
                         ForEach(region.countries, id: \ .name) { country in
-                            Button(action: {
-                                selectedCountry = country
-                                showDetail = true
-                            }) {
+                            NavigationLink {
+                                DetailViewControllerWrapper(country: country)
+                            } label: {
                                 CountryRow(country: country)
                             }
                         }
@@ -22,11 +19,6 @@ struct ListView: View {
                 }
             }
             .navigationTitle("Liste de voyages")
-            .navigationDestination(isPresented: $showDetail) {
-                if let country = selectedCountry {
-                    DetailViewControllerWrapper(country: country)
-                }
-            }
         }
     }
 }
@@ -50,7 +42,9 @@ struct CountryRow: View {
                     .font(.subheadline)
                     .foregroundStyle(.black)
             }
+            
             Spacer()
+            
             HStack {
                 Text("\(country.rate)")
                     .font(.subheadline)
@@ -58,7 +52,7 @@ struct CountryRow: View {
                 
                 Image(systemName: "star.fill")
                     .foregroundStyle(.orange)
-                    
+                
             }
             
         }
