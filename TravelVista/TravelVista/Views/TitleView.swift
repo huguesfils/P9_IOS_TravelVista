@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct TitleView: View {
-    var countryName: String
-    var capitalName: String
+    let countryName: String
+    let capitalName: String
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text(countryName)
