@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol CountryServiceProtocol {
+protocol CountryService {
     func load<T: Decodable>(_ filename: String) -> T
 }
 
-class Service: CountryServiceProtocol {
+class Service: CountryService {
     // Fonction qui permet de recupérer les données d'un fichier
     // Et qui les transforme en données utilisables en Swift
     // Ici nous l'utilisons uniquement pour notre fichier Source.json

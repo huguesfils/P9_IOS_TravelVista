@@ -2,7 +2,7 @@ import Testing
 import Foundation
 @testable import TravelVista
 
-struct MockCountryService: CountryServiceProtocol {
+struct MockCountryService: CountryService {
     var countriesToReturn: [Country] = []
     func load<T: Decodable>(_ filename: String) -> T {
         if T.self == [Country].self {
